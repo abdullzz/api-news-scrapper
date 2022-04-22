@@ -12,6 +12,12 @@ def index():
     response = scrapper.query(target_path)
     return success(response)
 
+@app.route('/detail/')
+def detail():
+    target_url = request.args.get('url')
+    response = scrapper.query_cnn(target_url)
+    return success(response)
+
 @app.route('/<path>')
 def non_index(path):
     path = "/" + path
