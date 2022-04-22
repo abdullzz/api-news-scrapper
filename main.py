@@ -12,6 +12,10 @@ def index():
     response = scrapper.query(target_path)
     return success(response)
 
+@app.route('/health')
+def health():
+    return success("OK")
+
 @app.route('/detail/')
 def detail():
     target_url = request.args.get('url')
