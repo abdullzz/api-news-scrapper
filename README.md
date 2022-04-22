@@ -1,5 +1,5 @@
 # cnn-news-api
-
+# https://news-scrapper-sample.herokuapp.com/
 # tambah endpoint baru di file constant.py
 
 # list endpoints
