@@ -7,7 +7,9 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    response = scrapper.query("/")
+    path = "/"
+    target_path = "{}{}".format(constant.BASE_URL, path)
+    response = scrapper.query(target_path)
     return success(response)
 
 @app.route('/<path>')
