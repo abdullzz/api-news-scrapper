@@ -61,5 +61,27 @@ INTERNAL_NEWS_PROVIDER_GROUP = {
             "hiburan",
             "gaya-hidup"            
         ]
+    },
+    "antara-news": {
+        "url": "https://www.antaranews.com/rss",
+        "endpoints": [
+            "terkini",
+            "top-news",
+            "politik",
+            "hukum",
+            "ekonomi",
+            "metro",
+            "sepakbola",
+            "olahraga",
+            "humaniora",
+            "lifestyle",
+            "hiburan",
+            "dunia",
+            "infografik",
+            "tekno",
+            "otomotif",
+            "warta-bumi",
+            "rilis-pers",
+        ]
     }
 }

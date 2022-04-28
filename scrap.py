@@ -1,3 +1,4 @@
+from urllib import response
 from requests import get
 from dateutil import parser
 from bs4 import BeautifulSoup
@@ -9,6 +10,7 @@ from requests_html import HTMLSession, AsyncHTMLSession
 from datetime import datetime, timedelta, timezone
 from dateutil.relativedelta import relativedelta
 import constant
+import xml.etree.ElementTree as ET
 
 
 class Script:
@@ -89,7 +91,7 @@ class Script:
 
     #     return data
     
-    def query_cnn_v2(self, url):
+    def query_cnn_article_v2(self, url):
         data = []
         try:
             req = get(url)
@@ -116,7 +118,7 @@ class Script:
 
         return data
 
-    def query_v2(self, url_target):
+    def query_cnn_v2(self, url_target):
         data = []
 
         async def get_post(url):
@@ -178,6 +180,24 @@ class Script:
             minutes=hour_minute)
         return str((now - past).strftime('%a, %m %Y %H:%M:%S'))
 
+    def query_antara_v2(self, url_target):
+        datas = []
+        url_target = url_target + ".xml"
+        response = get(url_target).content
+        root = ET.fromstring(response)
+        for d in root.findall('.//item'):
+            title = d.find('title').text
+            link = d.find('link').text
+            waktu = d.find('pubDate').text.split(" ")
+            gambar = d.find('enclosure').get('url')
+            if len(title) > 0 and len(link) > 0 and len(waktu) > 0 and len(gambar) > 0:
+                datas.append({
+                    "judul": title,
+                    'link': link,
+                    'waktu': " ".join(waktu[:-1]) + " WIB",
+                    'gambar': gambar
+                })
+        return datas
 
 if __name__ != '__main__':
     scrapper = Script()

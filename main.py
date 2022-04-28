@@ -3,6 +3,27 @@ from scrap import scrapper
 from template import not_found, success, errors
 import constant
 
+
+def news_provider_handler(news_provider, target_path):
+    try:
+        if news_provider == 'cnn-news':
+            response = scrapper.query_cnn_v2(target_path)
+        elif news_provider == 'antara-news':
+            if target_path == constant.INTERNAL_NEWS_PROVIDER_GROUP['antara-news']['url'] + "/":
+                target_path += 'terkini'
+            response = scrapper.query_antara_v2(target_path)
+        else:
+            return not_found({
+                "message": "news provider '{}' not found".format(news_provider),
+                "suggestion": "available news provider for V2 here: {}".format([x for x in constant.INTERNAL_NEWS_PROVIDER_GROUP.keys()])
+            })
+        return success(response)
+    except Exception as e:
+        return errors(e)
+
+# below are flask routes only, put any method above this line
+
+
 app = Flask(__name__)
 
 
@@ -24,7 +45,7 @@ def health():
 def detail_cnn():
     target_url = request.args.get('url')
     try:
-        response = scrapper.query_cnn_v2(target_url)
+        response = scrapper.query_cnn_article_v2(target_url)
         return success(response)
     except Exception as e:
         return errors(e)
@@ -82,11 +103,7 @@ def v2(news_provider, path=None):
                 .format(
                     constant.INTERNAL_NEWS_PROVIDER_GROUP[news_provider]['url']
                 )
-            try:
-                response = scrapper.query_v2(target_path)
-                return success(response)
-            except Exception as e:
-                return errors(e)
+            return news_provider_handler(news_provider, target_path)
         elif path in constant.INTERNAL_NEWS_PROVIDER_GROUP[news_provider]['endpoints']:
             target_path = \
                 "{}/{}"\
@@ -94,11 +111,7 @@ def v2(news_provider, path=None):
                     constant.INTERNAL_NEWS_PROVIDER_GROUP[news_provider]['url'],
                     path
                 )
-            try:
-                response = scrapper.query_v2(target_path)
-                return success(response)
-            except Exception as e:
-                return errors(e)
+            return news_provider_handler(news_provider, target_path)
         else:
             return not_found({
                 "message": "news provider {} found, but path not found".format(news_provider),
