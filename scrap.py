@@ -62,7 +62,34 @@ class Script:
             })
         return datas
 
-    def query_cnn(self, url):
+    # def query_cnn(self, url):
+    #     data = []
+    #     try:
+    #         req = get(url)
+    #         soup = BeautifulSoup(req.text, 'html.parser')
+    #         tag = soup.find('div', class_="detail_text")
+    #         gambar = soup.find('div', class_='media_artikel').find(
+    #             'img').get('src')
+    #         judul = soup.find('h1', class_='title').text
+    #         body = tag.text
+    #         data.append({
+    #             "judul": judul.strip(),
+    #             "poster": gambar.strip(),
+    #             "body": body.replace("\n", "<br>").strip().replace("<br><br>","<br>").replace("<br><br><br>","<br>").replace('\u00a0',' '),
+    #         })
+    #     except:
+    #         if url:
+    #             data.append({
+    #                 "message": "network error or invalid url ({})".format(url),
+    #             })
+    #         else:
+    #             data.append({
+    #                 "message": "error, please provide target url argument",
+    #             })
+
+    #     return data
+    
+    def query_cnn_v2(self, url):
         data = []
         try:
             req = get(url)
@@ -71,11 +98,11 @@ class Script:
             gambar = soup.find('div', class_='media_artikel').find(
                 'img').get('src')
             judul = soup.find('h1', class_='title').text
-            body = tag.text
+            body = "<br>".join([x.text for x in soup.find_all('p')])
             data.append({
                 "judul": judul.strip(),
                 "poster": gambar.strip(),
-                "body": body.replace("\n", "<br>").strip().replace("<br><br>","<br>").replace("<br><br><br>","<br>"),
+                "body": body.replace('\u00a0',' '),
             })
         except:
             if url:

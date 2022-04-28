@@ -24,7 +24,7 @@ def health():
 def detail_cnn():
     target_url = request.args.get('url')
     try:
-        response = scrapper.query_cnn(target_url)
+        response = scrapper.query_cnn_v2(target_url)
         return success(response)
     except Exception as e:
         return errors(e)
