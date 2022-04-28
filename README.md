@@ -1,5 +1,5 @@
 # api-news-scrapper
-## https://news-scrapper-sample.herokuapp.com/
+## https://api-news-scrapper.herokuapp.com/
 ### tambah endpoint baru di file constant.py
 
 ## list endpoints
