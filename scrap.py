@@ -75,7 +75,7 @@ class Script:
             data.append({
                 "judul": judul.strip(),
                 "poster": gambar.strip(),
-                "body": body.replace("\n", "<br>").strip(),
+                "body": body.replace("\n", "<br>").strip().replace("<br><br>","<br>").replace("<br><br><br>","<br>"),
             })
         except:
             if url:
